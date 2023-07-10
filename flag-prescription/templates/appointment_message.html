@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>Appointment Message</title>
+    {% include 'header.html' %}
+</head>
+
+<body>
+    {% include 'navbar_doctor.html' %}
+    <div class="doctors-container">
+    <h1>Modify your information here</h1>
+    {% if error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ error }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% elif success %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="success-message">
+                    {{ success }}
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        <form method="POST" action="/appointment/message" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" name="first-name" class="form-control" value="{{fname}}">
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" name="last-name" class="form-control" value="{{lname}}">
+            </div>
+            <div class="form-group">
+                <label for="message">Instruction Before Appointment:</label>
+                <input type="text" id="message" name="message" class="form-control" value="{{ message }}">
+                
+            </div>
+            <div class="form-group">
+                <label for="specialty">Specialty:</label>
+                <input type="text" id="specialty" name="specialty" class="form-control" readonly value="{{specialty}}">
+            </div>
+            <div class="form-group form-check">
+                {% if is_private %}
+                    <input type="checkbox" class="form-check-input" id="private-doctor" name="private-doctor" disabled="disabled" checked="checked">
+                {% else %}
+                    <input type="checkbox" class="form-check-input" id="private-doctor" name="private-doctor" disabled="disabled">
+                {% endif %}
+                <label class="form-check-label" for="private-doctor">Private Doctor</label>
+              </div>
+        
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+      
+      {% include 'footer.html' %}
+</body>
+</html>

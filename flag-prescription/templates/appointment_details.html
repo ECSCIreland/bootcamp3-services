@@ -1,0 +1,20 @@
+<html>
+<head>
+    <title>Appointment Details</title>
+    {% include 'header.html' %}
+</head>
+
+<body>
+    {% include 'navbar_patient.html' %}
+    <div class="doctors-container">
+        <h1>Appointment Details</h1>
+        <p>Doctor: {{ doctor }}</p>
+        <p>Datetime: {{ datetime }}</p>
+        <p>Instructions from the doctor: <br>{{ message }}</p>
+    </div>
+    
+
+      
+    {% include 'footer.html' %}
+</body>
+</html>

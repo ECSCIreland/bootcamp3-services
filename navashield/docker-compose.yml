@@ -1,0 +1,26 @@
+version: "3"
+
+volumes:
+  ep-mailbox:
+
+services:
+  ep:
+    build: ./ep
+    ports:
+      - "5000:1337"
+    environment:
+      - OWNER_EMAIL=ceo@enterprise.local
+    volumes:
+      - ep-mailbox:/service/mailbox
+    restart: unless-stopped
+  mgmt-backend:
+    build: ./mgmt/backend
+    restart: unless-stopped
+  mgmt-proxy:
+    build: ./mgmt/authproxy  
+    restart: unless-stopped
+  mgmt-nginx:
+    build: ./mgmt/authproxy_nginx
+    restart: unless-stopped
+    ports:
+      - "8001:80"

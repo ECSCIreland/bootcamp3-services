@@ -1,0 +1,36 @@
+<html>
+<head>
+    <title>Medicine Details</title>
+    {% include 'header.html' %}
+</head>
+
+<body>
+    {% if role == 'supplier' %}
+        {% include 'navbar_supplier.html' %}
+    {% elif role == 'patient' %}
+        {% include 'navbar_patient.html' %}
+    {% endif %}
+  
+    <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <img src="data:image/png;base64, {{ img }}" class="img-fluid" alt="Product Image">
+        </div>
+          <div class="col-md-8 text-center">
+            <h2>{{ name }}</h2>
+            <p style="overflow:hidden;text-overflow: ellipsis">Batch ID: {{ batch_id }}</p>
+            <p>Description: {{ desc }}</p>
+            {% if role =='supplier' %}
+              <p>Instruction: {{ instruction }}</p>
+            {% endif %}
+            {% if approv == 'on' %}
+                <p>Approval from Specialist: <span id="approval" class="text-danger">Required</span></p>
+            {% else %}
+                <p>Approval from Specialist: <span id="approval" class="text-success">Not Required</span></p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% include 'footer.html' %}
+</body>
+</html>

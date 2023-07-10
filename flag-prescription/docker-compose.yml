@@ -1,0 +1,7 @@
+version: '3'
+services:
+  flag-prescription:
+    build: .
+    ports:
+      - '5001:5000'
+    restart: unless-stopped

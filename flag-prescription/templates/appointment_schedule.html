@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>Schedule your Appointment</title>
+    {% include 'header.html' %}
+</head>
+
+<body>
+    {% include 'navbar_patient.html' %}
+    <div class="doctors-container">
+        <h1>Schedule your Appointment</h1>
+        {% if error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ error }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% elif success %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="success-message">
+                    {{ success }}
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        <form method="POST" action="/appointment/schedule" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          
+          <div class="form-group">
+            <label for="doctor">Select Doctor:</label>
+            <input type="text" id="doctor" name="doctor" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="appointment">Enter a date and time for your appointment:</label>
+            <input id="appointment" type="datetime-local" name="appointment" value="2023-07-09T08:30" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="notes">Notes for the doctor:</label>
+            <textarea id="notes" name="notes" rows="3" cols="50" class="form-control"></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      
+    {% include 'footer.html' %}
+</body>
+</html>

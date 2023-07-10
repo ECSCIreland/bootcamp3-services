@@ -1,0 +1,73 @@
+<html>
+<head>
+  <title>Welcome to Online Health Platform - Patient</title>
+  {% include 'header.html' %}
+</head>
+<body>
+  {% include 'navbar_patient.html' %}
+  <div class="container">
+    <h1>Welcome to Online Health Platform</h1>
+
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ error }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <!-- Medicines section -->
+    <h2>Medicines</h2>
+    <div class="card-deck">
+      <div class="card">
+        <img src="{{url_for('static', filename='img/medication.jpg')}}" class="card-img-top" alt="Medicine 3">
+        <div class="card-body">
+          <h5 class="card-title">Find Medication</h5>
+          <p class="card-text">Are you looking for a specific product? We have them all.</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{{url_for('static', filename='img/buy.jpg')}}" class="card-img-top" alt="Medicine 1">
+        <div class="card-body">
+          <h5 class="card-title">Buy Medicine</h5>
+          <p class="card-text">Purchase your prescribed medicines online and have them delivered to your doorstep.</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{{url_for('static', filename='img/prescription.jpg')}}" class="card-img-top" alt="Medicine 2">
+        <div class="card-body">
+          <h5 class="card-title">Request Prescription</h5>
+          <p class="card-text">Request a prescription from our experienced doctors to get the medication you need.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doctors section -->
+    <h2>Doctors</h2>
+    <div class="card-deck">
+      <div class="card">
+        <img src="{{url_for('static', filename='img/doctor.jpg')}}" class="card-img-top" alt="Doctor 1">
+        <div class="card-body">
+          <h5 class="card-title">Find a Doctor</h5>
+          <p class="card-text">Explore a wide range of qualified doctors and specialists to address your healthcare needs.</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{{url_for('static', filename='img/special.jpg')}}" class="card-img-top" alt="Doctor 2">
+        <div class="card-body">
+          <h5 class="card-title">Highly specialised Doctors</h5>
+          <p class="card-text">Get personalized healthcare services from top-rated doctors for premium medical care.</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{{url_for('static', filename='img/appointment.jpg')}}" class="card-img-top" alt="Doctor 3">
+        <div class="card-body">
+          <h5 class="card-title">Book Appointment</h5>
+          <p class="card-text">Schedule an appointment with a specialist to discuss your health concerns and get the right treatment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% include 'footer.html' %}
+</body>

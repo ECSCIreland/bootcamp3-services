@@ -1,0 +1,30 @@
+<html>
+<head>
+    <title>Login</title>
+</head>
+
+<body>
+    <form method="POST" action="/auth/register" enctype="multipart/form-data">
+        <label for="name">username:</label>
+        <input type="text" id="name" name="name">
+        <p></p>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <p></p>
+
+        <label for="role">Role:</label>
+        <select id="role" name="role">
+            <option value="patient">Patient</option>
+            <option value="supplier">Supplier</option>
+            <option value="doctor">Doctor</option>
+          </select>
+        <p></p>
+
+        <button type="submit">Submit</button>
+      </form>
+
+      <p>Click <a href="/">here</a> to go back.</p>
+      
+</body>
+</html>

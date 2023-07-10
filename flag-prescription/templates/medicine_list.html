@@ -1,0 +1,56 @@
+<html>
+<head>
+    <title>Medicine list</title>
+    {% include 'header.html' %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+  {% if role == 'supplier' %}
+    {% include 'navbar_supplier.html' %}
+  {% elif role == 'patient' %}
+    {% include 'navbar_patient.html' %}
+  {% endif %}
+  
+  <div class="container">
+    <h1>Here are the medicines offered by {{ supplier }}:</h1>
+    <div id="medicines-list" class="row">
+      <table class="table table-striped text-center">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th >Batch ID</th>
+            <th>No Approval Required</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name, batch_id, needs_approval, description in medicines %}
+          <tr>
+            <td class="align-middle medicine-name">{{ name }}</td>
+            <td class="text-center align-middle batch-id-cell" title="{{ batch_id }}">{{ batch_id }}</td>
+            <td class="align-middle">
+              {% if needs_approval == 'on' %}
+              <i class="fas fa-circle text-danger"></i>
+              {% else %}
+              <i class="fas fa-circle text-success"></i>
+              {% endif %}
+            </td>
+            <td class="align-middle">
+              <form id="medicine-form" action="/medicine/details" method="POST">
+                <input type="hidden" name="supplier" value="{{ supplier }}">
+                <input type="hidden" name="batch_id" value="{{ batch_id }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary">Go to Details</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div>
+  
+  {% include 'footer.html' %}
+</body>
+</html>

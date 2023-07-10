@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title>Medicine Register</title>
+    {% include 'header.html' %}
+</head>
+
+<body>
+    {% include 'navbar_supplier.html' %}
+    <div class="container">
+        <h1>Medicine Registration Form</h1>
+        {% if error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ error }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% elif success %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="success-message">
+                    {{ success }}
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        <form class="needs-validation" method="POST" action="/medicine/register" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+              <label for="medicine_name">Medicine Name:</label>
+              <input type="text" class="form-control" id="medicine_name" name="medicine_name" required>
+            </div>
+            <div class="form-group">
+                <label for="batch_id">Batch ID:</label>
+                <input type="text" class="form-control" id="batch_id" name="batch_id" required>
+              </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="needs_approval" name="needs_approval">
+              <label class="form-check-label" for="needs_approval">Does this medicine need approval by specialist before passing electronic prescriptions?</label>
+            </div>
+          
+            <div class="form-group">
+              <label for="description">Description of drug:</label>
+              <input type="text" class="form-control" id="description" name="description" required>
+            </div>
+          
+            <div class="form-group">
+              <label for="usage">Usage instructions:</label>
+              <input type="text" class="form-control" id="usage" name="usage" required>
+            </div>
+          
+            <div class="form-group">
+              <label for="image">Image:</label>
+              <input type="file" class="form-control-file" id="image" name="image" required>
+            </div>
+          
+            <button type="submit" class="btn btn-primary">Register</button>
+          </form>
+      </div>
+    {% include 'footer.html' %}
+</body>
+</html>

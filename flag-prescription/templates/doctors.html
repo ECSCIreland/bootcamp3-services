@@ -1,0 +1,124 @@
+<html>
+<head>
+    <title>Doctors</title>
+    {% include 'header.html' %}
+</head>
+
+<body>
+    {% include 'navbar_patient.html' %}
+    <div class="container">
+        <h1>Doctors</h1>
+        {% if error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ error }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        <form method="POST" action="/doctor/list" enctype="multipart/form-data" class="row">
+          <div class="col-sm-12">
+            <div class="form-group d-flex align-items-center">
+              <label for="name" class="mr-2 mb-0">Search:</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+              <button type="submit" class="btn btn-primary ml-2">Submit</button>
+            </div>
+          </div>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        </form>
+        <table class="table table-striped text-center align-middle">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Specialty</th>
+              <th>Private</th>
+            </tr>
+          </thead>
+          <tbody id="doctors-table">
+            {% for doctor in doctors %}
+            <tr>
+              <td>{{ doctor[0] }}</td>
+              <td>{{ doctor[1] }}</td>
+              <td>{{ doctor[2] }}</td>
+              <td>{{ doctor[3] }}</td>
+              {% if doctor[4] %}
+                <td><input type="checkbox" checked disabled></td>
+              {% else %}
+                <td><input type="checkbox" disabled></td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        
+        {% if doctors|length > 20 %}
+        <div class="pagination">
+          <a href="#" id="prev-btn" class="btn prev">&laquo; Previous</a>
+          <a href="#" id="next-btn" class="btn next">Next &raquo;</a>
+        </div>
+        {% endif %}
+        
+      </div>
+      <script>
+        // Get the table body and pagination buttons
+        const doctorsTableBody = document.getElementById('doctors-table');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+      
+        // Set the number of doctors per page
+        const doctorsPerPage = 20;
+      
+        // Initialize the current page
+        let currentPage = 1;
+      
+        // Calculate the total number of pages
+        const totalPages = Math.ceil(doctorsTableBody.rows.length / doctorsPerPage);
+      
+        // Function to show doctors based on the current page
+        function showDoctors() {
+          const start = (currentPage - 1) * doctorsPerPage;
+          const end = start + doctorsPerPage;
+      
+          // Hide all doctors
+          Array.from(doctorsTableBody.rows).forEach((row) => {
+            row.style.display = 'none';
+          });
+      
+          // Show doctors for the current page
+          Array.from(doctorsTableBody.rows).slice(start, end).forEach((row) => {
+            row.style.display = 'table-row';
+          });
+      
+          // Enable/disable pagination buttons
+          prevBtn.disabled = currentPage === 1;
+          nextBtn.disabled = currentPage === totalPages;
+        }
+      
+        // Function to navigate to the previous page
+        function goToPreviousPage() {
+          if (currentPage > 1) {
+            currentPage--;
+            showDoctors();
+          }
+        }
+      
+        // Function to navigate to the next page
+        function goToNextPage() {
+          if (currentPage < totalPages) {
+            currentPage++;
+            showDoctors();
+          }
+        }
+      
+        // Attach click event listeners to pagination buttons
+        prevBtn.addEventListener('click', goToPreviousPage);
+        nextBtn.addEventListener('click', goToNextPage);
+      
+        // Show doctors for the initial page
+        showDoctors();
+      </script>     
+    {% include 'footer.html' %}
+</body>
+</html>

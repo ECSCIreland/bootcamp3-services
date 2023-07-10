@@ -1,0 +1,30 @@
+<html>
+<head>
+    <title>List Medicines</title>
+    {% include 'header.html' %}
+</head>
+
+<body>
+    {% include 'navbar_patient.html' %}
+
+    <form class="cool-form" method="POST" action="/medicine/list" enctype="multipart/form-data">
+        <div class="form-group">
+          <h1>Search</h1>
+          {% if error %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ error }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          {% endif %}
+          <label for="supplier">Supplier:</label>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="text" class="form-control" id="supplier" name="supplier" placeholder="Supplier Name">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      
+    {% include 'footer.html' %}
+</body>
+</html>

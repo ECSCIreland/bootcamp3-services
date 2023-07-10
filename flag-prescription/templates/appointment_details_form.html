@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>Appointment Details</title>
+    {% include 'header.html' %}
+</head>
+
+<body>
+    {% include 'navbar_patient.html' %}
+    <div class="doctors-container">
+        <h1>Appointment Details</h1>
+        {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ error }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% elif success %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div class="success-message">
+                        {{ success }}
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+            <form method="POST" action="/appointment/details" enctype="multipart/form-data">
+                <div class="form-row align-items-center">
+                  <div class="col-auto">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <label for="token">Your token:</label>
+                  </div>
+                  <div class="col-auto">
+                    <input type="text" id="token" name="token" class="form-control">
+                  </div>
+                  <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </form>
+    </div>
+      
+      {% include 'footer.html' %}
+</body>
+</html>
