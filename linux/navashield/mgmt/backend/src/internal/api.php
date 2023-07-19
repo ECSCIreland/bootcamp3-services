@@ -46,7 +46,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET')
     while ($row = $result->fetchArray())
     {
         $iocID = $row['id'];
-        $db->exec("INSERT INTO captures (iocid,fileid) VALUES ($iocID, $fileID)");
+        $stmt = $db->prepare('INSERT INTO captures (iocid,fileid) VALUES (:iocid, :fileid)');
+        $stmt->bindValue(':iocid', $iocID, SQLITE3_INTEGER);
+        $stmt->bindValue(':fileid', $fileID, SQLITE3_INTEGER);
+        $stmt->execute();
     }
 
 } else {

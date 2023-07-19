@@ -57,7 +57,10 @@ def register_medicine(request):
         medicine_usage = request.form['usage']
         image = request.files['image']
         if len(image.read()) > 500 * 1024:
-            return render_template('medicine_register.html', error='Image file too large!')            
+            return render_template('medicine_register.html', error='Image file too large!')
+
+        if not batch_id.isdigit():
+            return render_template('medicine_register.html', error='This is not a valid batch ID!')          
         try:
             _ = int(batch_id)
         except:
@@ -72,8 +75,8 @@ def register_medicine(request):
         if medicine_name in all_names:
             return render_template('medicine_register.html', error='Medicine name already exists!')
 
-        if '.jpg' not in image.filename:
-            return render_template('medicine_register.html', error='Invalid image format!')
+        if image.filename.count('.') != 1 or image.filename.rsplit('.', 1)[1].lower() != 'jpg':
+            return render_template('medicine_register.html', error='Invalid Filename!')
         
         filename = f'medicines/{supplier_name}/{secure_filename(image.filename)}'
         image.seek(0)

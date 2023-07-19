@@ -85,7 +85,7 @@ while($policy = $result->fetchArray())
   {
     die("Too many policies matched the filter.");
   }
-  $content = file_get_contents("../policies/" . $policy['id'] . ".txt");
+  $content = file_get_contents("../policies/" . intval($policy['id']) . ".txt");
   $template = $report['template'];
   $config = HTMLPurifier_Config::createDefault();
   $purifier = new HTMLPurifier($config);
