@@ -8,7 +8,7 @@ from Crypto.Util.number import *
 
 app = Flask(__name__)
 
-app.secret_key = 'some_random_key'  # ChatGPT: Set a secret key for session security
+app.secret_key = 'FDG2435YGN'  # ChatGPT: Set a secret key for session security
 
 csrf = CSRFProtect()
 csrf.init_app(app)
@@ -82,4 +82,4 @@ def doctors_list():
 
 
 if __name__ == '__main__':
-    app.run(port=5001, debug='True')
+    app.run(port=5001)
