@@ -30,6 +30,8 @@ def message_appointment(request):
             dt = cur.fetchone()
             return render_template('appointment_message.html', fname=dt[0], lname=dt[1], message=dt[2], specialty=dt[3], is_private=dt[4], error=error)
 
+        # Possible SQL Injection as user inputted data is passed to an database execute.
+        # TODO: Patch this to prevent the SQL injection.
         cur.execute(f"UPDATE doctor_attributes SET fname='{fname}', lname='{lname}', message='{new_message}', specialty='{specialty}' WHERE username='{username}'")
         conn.commit()
         iv = request.form['csrf_token'][-16:].encode()
@@ -124,10 +126,14 @@ def list_doctors(request):
         if invalid_name(username):
             return render_template('doctors.html', error='Invalid username!')
         
+        # This is using string concatenation for its SQL query which can result in an SQL injection.
+        # TODO: Patch this to prevent SQL injection.
         cur.execute(f"SELECT username, fname, lname, specialty, is_private FROM doctor_attributes WHERE username=?", (username,))
         doctors = cur.fetchall()
         return render_template('doctors.html', doctors=doctors)
     else:
+        # This is using string concatenation for its SQL query which can result in an SQL injection.
+        # TODO: Patch this to prevent SQL injection.
         cur.execute(f"SELECT username, fname, lname, specialty, is_private FROM doctor_attributes ORDER BY id DESC LIMIT 10",)
         doctors = cur.fetchall()
         return render_template('doctors.html', doctors=doctors)

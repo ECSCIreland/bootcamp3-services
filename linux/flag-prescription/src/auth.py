@@ -38,6 +38,8 @@ def connect_database():
         with open('database/init.sql') as f:
             queries = f.read().split(';')
         
+        # This is using string concatenation for its SQL query which can result in an SQL injection.
+        # TODO: Patch this to prevent SQL injection.
         for query in queries:
             cur.execute(query + ';')
 
@@ -67,6 +69,8 @@ def auth_login(request):
         e = int(e, 16)
         d = int(d, 16)
         
+        # The usage of MD5 as a password hasher is considered insecure due to its short cracking time.
+        # TODO: Patch this to use another hashing method.
         if pwd != md5(password.encode()).hexdigest():
             return render_template('login.html', error='Wrong password!', role='guest')
 
@@ -120,6 +124,8 @@ def auth_register(request):
         e = 65537
         d = inverse(e, (p-1)*(q-1))
 
+        # The usage of MD5 as a password hasher is considered insecure due to its short cracking time.
+        # TODO: Patch this to use another hashing method.
         password = md5(password.encode()).hexdigest()
         cur.execute(f"INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)", (role, name, password, hex(N), hex(e), hex(d)))
         conn.commit()

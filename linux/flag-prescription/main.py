@@ -8,6 +8,8 @@ from Crypto.Util.number import *
 
 app = Flask(__name__)
 
+# This is a hardcoded key which is not so secure.
+# TODO: Replace with some randomly generated key.
 app.secret_key = 'some_random_key'  # ChatGPT: Set a secret key for session security
 
 csrf = CSRFProtect()
@@ -82,4 +84,6 @@ def doctors_list():
 
 
 if __name__ == '__main__':
+    # The debug argument should not be enabled in a production environment.
+    # TODO: Fix this.
     app.run(port=5001, debug='True')
