@@ -58,7 +58,7 @@ def schedule_appointment(request):
             return render_template('appointment_schedule.html', error='The doctor is very busy for long notes!')
         doctor = request.form['doctor']
         if len(doctor) > 40:
-            return render_template('appointment_schedule.html', error='The doctor is very busy for long notes!')
+            return render_template('appointment_schedule.html', error='The doctor is very busy for long doctors!')
         datetime = request.form['appointment']
         conn, cur = connect_database()
         cur = conn.cursor()
@@ -79,7 +79,7 @@ def schedule_appointment(request):
         appointment.doctor = doctor.encode()
         appointment.patient = session['username'].encode()
         appointment_data = appointment.SerializeToString()
-        ct = iv.hex()+cipher.encrypt(pad(appointment_data, AES.block_size)).hex()
+        ct = cipher.encrypt(pad(appointment_data, AES.block_size)).hex() + iv.hex()
         
         message = 'You can use the following token to access the details of your appointment!\n' + ct
         message += '\nThe information you entered is stored on this object:\n' + appointment_data.hex()
