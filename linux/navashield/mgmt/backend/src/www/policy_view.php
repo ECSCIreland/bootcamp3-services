@@ -12,7 +12,7 @@ if (!$policy) {
   die("nope");
 }
 
-$content = file_get_contents("../policies/" . $policy['id'] . ".txt");
+$content = file_get_contents("../policies/" . intval($policy['id']) . ".txt");
 
 function nicePriority($priorityInt)
 {
