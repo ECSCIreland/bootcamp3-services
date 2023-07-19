@@ -41,7 +41,7 @@ def message_appointment(request):
         appointment.doctor = session['username'].encode()
         appointment.patient = b'Dummy Patient'
         appointment_data = appointment.SerializeToString()
-        ct = cipher.encrypt(pad(appointment_data, AES.block_size)).hex() + iv.hex()
+        ct = cipher.encrypt(pad(appointment_data, AES.block_size)).hex() + '|' +iv.hex()
         return render_template('appointment_message.html', fname=fname, lname=lname, specialty=specialty, message=new_message, is_private=is_private, success='Your information has been updated! Sample token: ' + ct)
     else:
         cur.execute(f"SELECT fname, lname, message, specialty, is_private FROM doctor_attributes WHERE username=?", (session['username'],))
@@ -79,7 +79,7 @@ def schedule_appointment(request):
         appointment.doctor = doctor.encode()
         appointment.patient = session['username'].encode()
         appointment_data = appointment.SerializeToString()
-        ct = cipher.encrypt(pad(appointment_data, AES.block_size)).hex() + iv.hex()
+        ct = cipher.encrypt(pad(appointment_data, AES.block_size)).hex() + '|' +iv.hex()
         
         message = 'You can use the following token to access the details of your appointment!\n' + ct
         message += '\nThe information you entered is stored on this object:\n' + appointment_data.hex()
@@ -94,9 +94,8 @@ def details_appointment(request):
     if request.method == 'POST':
         try:
             token = request.form['token']
-            iv = bytes.fromhex(token[32:])
-            ct = bytes.fromhex(token[:32])
-            
+            ct,iv = token.split('|')
+            ct,iv = bytes.fromhex(ct),bytes.fromhex(iv)
             cipher = AES.new(appointment_key, AES.MODE_CBC, iv)
             pt = unpad(cipher.decrypt(ct), AES.block_size)
             appointment = Appointment()
@@ -108,7 +107,7 @@ def details_appointment(request):
             message = cur.fetchone()[0]
             datetime = appointment.datetime
         except:
-            message = 'An error has occured!'
+            message = f'An error has occured!'
             return render_template('appointment_details_form.html', error=message)    
         return render_template('appointment_details.html', message=message, doctor=doctor, datetime=datetime.decode())
     else:
