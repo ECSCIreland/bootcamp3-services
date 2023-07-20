@@ -126,14 +126,12 @@ def list_doctors(request):
         if invalid_name(username):
             return render_template('doctors.html', error='Invalid username!')
         
-        # This is using string concatenation for its SQL query which can result in an SQL injection.
-        # TODO: Patch this to prevent SQL injection.
+        # This is a parameterized SQL query which is not vulnerable to SQL injection.
         cur.execute(f"SELECT username, fname, lname, specialty, is_private FROM doctor_attributes WHERE username=?", (username,))
         doctors = cur.fetchall()
         return render_template('doctors.html', doctors=doctors)
     else:
-        # This is using string concatenation for its SQL query which can result in an SQL injection.
-        # TODO: Patch this to prevent SQL injection.
+        # This is a static SQL query which can not be used for SQL injection.
         cur.execute(f"SELECT username, fname, lname, specialty, is_private FROM doctor_attributes ORDER BY id DESC LIMIT 10",)
         doctors = cur.fetchall()
         return render_template('doctors.html', doctors=doctors)
