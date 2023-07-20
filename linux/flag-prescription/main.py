@@ -8,12 +8,15 @@ from Crypto.Util.number import *
 
 app = Flask(__name__)
 
-# This is a hardcoded key which is not so secure.
-# TODO: Replace with some randomly generated key.
-app.secret_key = 'some_random_key'  # ChatGPT: Set a secret key for session security
+# Replaced the default hardcoded key which is not so secure.
+app.secret_key = '35748596deb340a304b97630fd397882aa1290c9b706c102cdf8062703c3'  # ChatGPT: Set a secret key for session security
 
+# We can break attacker scripts by rewriting the middleware for CSRF 
+# to change the name of where the token is stored.
+# TODO: Change middleware to custom CSRF implementation.
 csrf = CSRFProtect()
 csrf.init_app(app)
+
 @app.route('/')
 def index():
     if 'username' not in session:
@@ -85,5 +88,4 @@ def doctors_list():
 
 if __name__ == '__main__':
     # The debug argument should not be enabled in a production environment.
-    # TODO: Fix this.
-    app.run(port=5001, debug='True')
+    app.run(port=5001, debug=False)

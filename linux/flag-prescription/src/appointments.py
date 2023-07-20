@@ -30,9 +30,8 @@ def message_appointment(request):
             dt = cur.fetchone()
             return render_template('appointment_message.html', fname=dt[0], lname=dt[1], message=dt[2], specialty=dt[3], is_private=dt[4], error=error)
 
-        # Possible SQL Injection as user inputted data is passed to an database execute.
-        # TODO: Patch this to prevent the SQL injection.
-        cur.execute(f"UPDATE doctor_attributes SET fname='{fname}', lname='{lname}', message='{new_message}', specialty='{specialty}' WHERE username='{username}'")
+        # Patched SQL Injection by changing query to a parameterized query.
+        cur.execute(f"UPDATE doctor_attributes SET fname=?, lname=?, message=?, specialty=? WHERE username=?", (fname, lname, new_message, specialty, username))
         conn.commit()
         iv = request.form['csrf_token'][-16:].encode()
         

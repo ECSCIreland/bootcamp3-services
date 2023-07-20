@@ -38,8 +38,6 @@ def connect_database():
         with open('database/init.sql') as f:
             queries = f.read().split(';')
         
-        # This is using string concatenation for its SQL query which can result in an SQL injection.
-        # TODO: Patch this to prevent SQL injection.
         for query in queries:
             cur.execute(query + ';')
 
