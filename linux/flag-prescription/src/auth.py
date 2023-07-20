@@ -4,10 +4,10 @@
 
 from flask import render_template, session, redirect, url_for
 from Crypto.Util.number import *
-from hashlib import md5
 from functools import wraps
 import sqlite3
 import os
+import hashlib
 
 DATABASE = 'database/auth.db'
 
@@ -67,7 +67,7 @@ def auth_login(request):
         e = int(e, 16)
         d = int(d, 16)
         
-        if pwd != md5(password.encode()).hexdigest():
+        if pwd != hashlib.sha256(password.encode()).hexdigest():
             return render_template('login.html', error='Wrong password!', role='guest')
 
         session['username'] = name
@@ -120,7 +120,7 @@ def auth_register(request):
         e = 65537
         d = inverse(e, (p-1)*(q-1))
 
-        password = md5(password.encode()).hexdigest()
+        password = hashlib.sha256(password.encode()).hexdigest()
         cur.execute(f"INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)", (role, name, password, hex(N), hex(e), hex(d)))
         conn.commit()
         
