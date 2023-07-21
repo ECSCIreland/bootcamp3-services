@@ -3,7 +3,8 @@
 '''
 from flask import render_template, session, redirect, url_for
 from werkzeug.utils import secure_filename
-from hashlib import md5
+from hashlib import sha256
+# swap from md5 to sha256. Probably not needed but safer than md5
 import base64
 
 from src.auth import login_required
@@ -15,16 +16,16 @@ all_ids = set()
 all_names = set()
 
 def load_medicine_by_batch_id(supplier, batch_id):
-    h_batch_id = md5(batch_id.encode()).hexdigest()
+    h_batch_id = sha256(batch_id.encode()).hexdigest()
     return load_medicine(supplier, h_batch_id+'.json')
 
 def load_medicine(supplier, medicine):
-    path = f'medicines/{supplier}/{medicine}'
+    path = secure_filename(f'medicines/{supplier}/{medicine}')
     if os.path.exists(path):
         with open(path, mode='r') as medicine_file:
             medicine = json.loads(medicine_file.read())
             if os.path.exists(medicine['image']):
-                image_data = open(medicine['image'], mode='rb').read()
+                image_data = open(secure_filename(medicine['image']), mode='rb').read()
             else:
                 image_data = b'Could not find image!'
             return medicine, image_data
@@ -91,7 +92,7 @@ def register_medicine(request):
         medicine['image'] = filename
         medicine['key'] = session['key']
 
-        h_batch_id = md5(batch_id.encode()).hexdigest()
+        h_batch_id = sha256(batch_id.encode()).hexdigest()
         with open(f'medicines/{supplier_name}/{h_batch_id}.json', mode='w') as medicine_file:
             medicine_file.write(json.dumps(medicine))
 

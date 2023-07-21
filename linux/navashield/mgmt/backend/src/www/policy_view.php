@@ -12,7 +12,15 @@ if (!$policy) {
   die("nope");
 }
 
-$content = file_get_contents("../policies/" . $policy['id'] . ".txt");
+// Using basename so cant use any path treversal
+$fileName = basename($$policy['id']);
+$filePath = "../policies/" . $fileName . ".txt";
+// Checking if file exists, if not sets to file not found. Ensures no shits leaked. idk Im not a php dev, chat gpt suggested it lol.
+if (if_file($filePath)){
+  $content = file_get_contents($filePath);
+} else {
+  $content = "File not found";
+}
 
 function nicePriority($priorityInt)
 {
@@ -49,7 +57,7 @@ function nicePriority($priorityInt)
         Priority
       </div>
       <div class="card-body">
-        <?= nicePriority($policy['priority']) ?>
+        <?=  htmlspecialchars(nicePriority($policy['priority']), ENT_QUOTES | ENT_HTML5, 'UTF-8') ?>
       </div>
     </div>
 

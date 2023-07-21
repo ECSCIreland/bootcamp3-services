@@ -63,13 +63,13 @@ if (isset($_GET['threadid'])) {
                     ?>
 
                         <tr>
-                            <td class="border-bottom-0" style="width: 100%"><a href="history.php?threadid=<?= $row['threadid'] ?>">
-                                    <h6 class="fw-semibold mb-0"><?= $row['threadid'] ?></h6>
+                            <td class="border-bottom-0" style="width: 100%"><a href="history.php?threadid=<?= htmlspecialchars($row['threadid'], ENT_QUOTES | ENT_HTML5, 'UTF-8') ?>">
+                                    <h6 class="fw-semibold mb-0"><?= htmlspecialchars($row['threadid'], ENT_QUOTES | ENT_HTML5, 'UTF-8') ?></h6>
                                 </a></td>
 
                             <td class="border-bottom-0">
                                 <div class="d-flex align-items-center gap-2">
-                                <?= $row['hash'] ?></h6>
+                                <?= htmlspecialchars($row['hash'], ENT_QUOTES | ENT_HTML5, 'UTF-8') ?></h6>
                                 </div>
                             </td>
                         </tr>

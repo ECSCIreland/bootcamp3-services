@@ -34,7 +34,7 @@ $stmt->bindValue(':id', $capture['fileid'], SQLITE3_INTEGER);
 $result = $stmt->execute();
 $val = $stmt->execute()->fetchArray()[0];
 
-$fn = "../ioc/" . $val;
+$fn = "../ioc/" . basename($val);
 $fp = fopen($fn, 'rb');
 header("Content-Length: " . filesize($fn));
 

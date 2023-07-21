@@ -54,12 +54,12 @@ function nicePriority($priorityInt)
                     ?>
 
                         <tr>
-                            <td class="border-bottom-0"  style="width: 100%"><a href="report.php?cmd=view&id=<?= $row['id'] ?>">
-                                    <h6 class="fw-semibold mb-0"><?= $row['name'] ?></h6>
+                            <td class="border-bottom-0"  style="width: 100%"><a href="report.php?cmd=view&id=<?= htmlspecialchars($row['id'], ENT_QUOTES | ENT_HTML5, 'UTF-8') ?>">
+                                    <h6 class="fw-semibold mb-0"><?= htmlspecialchars($row['name'], ENT_QUOTES | ENT_HTML5, 'UTF-8') ?></h6>
                                 </a></td>
 
                             <td class="border-bottom-0" style="width: auto">
-                                <a href="report.php?cmd=generate&id=<?= $row['id'] ?>" class="btn btn-primary">Generate</a>
+                                <a href="report.php?cmd=generate&id=<?= htmlspecialchars($row['id'], ENT_QUOTES | ENT_HTML5, 'UTF-8') ?>" class="btn btn-primary">Generate</a>
                             </td>
                         </tr>
 
