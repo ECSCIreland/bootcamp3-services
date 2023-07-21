@@ -72,7 +72,7 @@ def register_medicine(request):
         if medicine_name in all_names:
             return render_template('medicine_register.html', error='Medicine name already exists!')
 
-        if '.jpg' not in image.filename:
+        if image.filename.lower().endswith(".jpg") == False:
             return render_template('medicine_register.html', error='Invalid image format!')
         
         filename = f'medicines/{supplier_name}/{secure_filename(image.filename)}'

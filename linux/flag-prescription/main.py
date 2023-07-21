@@ -4,11 +4,12 @@ from src.auth import auth_login, auth_register, auth_logout
 from src.prescription import register_medicine, list_medicines, request_prescription, buy_medicine, medicine_details
 from src.appointments import message_appointment, schedule_appointment, details_appointment, list_doctors
 
+
 from Crypto.Util.number import *
 
 app = Flask(__name__)
 
-app.secret_key = 'some_random_key'  # ChatGPT: Set a secret key for session security
+app.secret_key = 'aXJlbGFuZHdpdGhvdXR0aGVyZQ=='  # ChatGPT: Set a secret key for session security
 
 csrf = CSRFProtect()
 csrf.init_app(app)
@@ -82,4 +83,4 @@ def doctors_list():
 
 
 if __name__ == '__main__':
-    app.run(port=5001, debug='True')
+    app.run(port=5001, debug='False')
