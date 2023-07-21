@@ -1,5 +1,7 @@
 FROM python:3.9
 
+ENV SECRET_KEY = "django-insecure-!huxb2z*wbcg37m5=ez6v2jho9!ij#bq0pd)gg_6hh84x%9b$o"
+
 # Downloaded from https://github.com/jazzband/django-revproxy/archive/refs/tags/0.11.0.zip
 COPY 0.11.0.zip /tmp
 

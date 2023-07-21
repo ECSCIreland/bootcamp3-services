@@ -31,11 +31,11 @@ while ($val = $result->fetchArray()) {
         <?= $error ?>
       </div>
     <?php } ?>
-    <form method="POST" action="/report_pdf.php?id=<?= $report['id'] ?>">
+    <form method="POST" action="/report_pdf.php?id=<?= htmlspecialchars($report['id'], ENT_QUOTES | ENT_HTML5, 'UTF-8') ?>">
       <?php if (isset($variables)) {
         foreach ($variables as $var) { ?>
           <div class="mb-3">
-            <label for="<?= $var ?>" class="form-label"><?= $var ?></label>
+            <label for="<?= $var ?>" class="form-label"><?= htmlspecialchars($var, ENT_QUOTES | ENT_HTML5, 'UTF-8') ?></label>
             <input type="text" class="form-control" id="<?= $var ?>" name="<?= $var ?>">
           </div>
       <?php }

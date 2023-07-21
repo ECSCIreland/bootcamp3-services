@@ -85,7 +85,15 @@ while($policy = $result->fetchArray())
   {
     die("Too many policies matched the filter.");
   }
-  $content = file_get_contents("../policies/" . $policy['id'] . ".txt");
+  
+  $fileName = basename($$policy['id']);
+  $filePath = "../policies/" . $fileName . ".txt";
+  if (if_file($filePath)){
+    $content = file_get_contents($filePath);
+  } else {
+    $content = "File not found";
+  }
+
   $template = $report['template'];
   $config = HTMLPurifier_Config::createDefault();
   $purifier = new HTMLPurifier($config);

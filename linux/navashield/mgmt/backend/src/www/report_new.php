@@ -178,14 +178,14 @@ if ($val >= 5) {
                     <td>
                       <select class="form-select" name="filterCol[]">
                         <?php foreach ($allowedColumns as $opt) { ?>
-                          <option><?= $opt ?></option>
+                          <option><?= htmlspecialchars($opt, ENT_QUOTES | ENT_HTML5, 'UTF-8') ?></option>
                         <?php } ?>
                       </select>
                     </td>
                     <td>
                       <select class="form-select" name="filterOperator[]">
                         <?php foreach ($allowedOperators as $opt) { ?>
-                          <option><?= $opt ?></option>
+                          <option><?= htmlspecialchars($opt, ENT_QUOTES | ENT_HTML5, 'UTF-8') ?></option>
                         <?php } ?>
                       </select>
                     </td>

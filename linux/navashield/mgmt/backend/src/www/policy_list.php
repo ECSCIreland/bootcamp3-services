@@ -56,13 +56,13 @@ function nicePriority($priorityInt)
                     ?>
 
                         <tr>
-                            <td class="border-bottom-0" style="width: 100%"><a href="policy.php?cmd=view&id=<?= $row['id'] ?>">
+                            <td class="border-bottom-0" style="width: 100%"><a href="policy.php?cmd=view&id=<?= htmlspecialchars($row['id'], ENT_QUOTES | ENT_HTML5, 'UTF-8') ?>">
                                     <h6 class="fw-semibold mb-0"><?= htmlspecialchars($row['name'], ENT_QUOTES | ENT_HTML5, 'UTF-8') ?></h6>
                                 </a></td>
 
                             <td class="border-bottom-0">
                                 <div class="d-flex align-items-center gap-2">
-                                    <?= nicePriority($row['priority']) ?>
+                                    <?= htmlspecialchars(nicePriority($row['priority']), ENT_QUOTES | ENT_HTML5, 'UTF-8') ?>
                                 </div>
                             </td>
                         </tr>
