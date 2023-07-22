@@ -12,7 +12,16 @@ if (!$policy) {
   die("nope");
 }
 
-$content = file_get_contents("../policies/" . $policy['id'] . ".txt");
+# I know this is path traversal, just don't know how to fix it.
+# ChatGPT recommends the following (but who knows if it would work):
+# $policyId = basename($policy['id']);
+# if(preg_match('/^[a-zA-Z0-9]+$/', $policyId)) {
+#     $content = file_get_contents("../policies/" . $policyId . ".txt");
+# } 
+# else {
+      # $content = "File not found";
+#   }
+$content = file_get_contents("../policies/" . basename($policy['id']) . ".txt");
 
 function nicePriority($priorityInt)
 {

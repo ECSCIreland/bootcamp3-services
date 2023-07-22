@@ -3,12 +3,16 @@ from flask_wtf.csrf import CSRFProtect
 from src.auth import auth_login, auth_register, auth_logout
 from src.prescription import register_medicine, list_medicines, request_prescription, buy_medicine, medicine_details
 from src.appointments import message_appointment, schedule_appointment, details_appointment, list_doctors
-
 from Crypto.Util.number import *
+import os
 
 app = Flask(__name__)
 
-app.secret_key = 'some_random_key'  # ChatGPT: Set a secret key for session security
+# This could probably be made more secure by importing os and setting app.secret.key as an env variable, 
+# a dirty fix would be something like
+# e.g:
+# app.secret_key = ':,4,XL,K(yB%H2!£S@Dz#Q&qf~}?NI29blb:,4,XL,K(yB%H2!£S@Dz#Q&qf~}?NI29blb:,4,XL,K(yB%H2!£S@Dz#Q&qf~}?NI29blb'
+app.secret_key= os.environ['SECRET_KEY']  # ChatGPT: Set a secret key for session security
 
 csrf = CSRFProtect()
 csrf.init_app(app)
@@ -80,6 +84,6 @@ def doctors_list():
 # ---------------------------------------
 
 
-
+# debug should never be set as True in a prod env.
 if __name__ == '__main__':
-    app.run(port=5001, debug='True')
+    app.run(port=5001)
