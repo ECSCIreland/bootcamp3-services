@@ -46,7 +46,11 @@ if($_SERVER['REQUEST_METHOD'] == 'GET')
     while ($row = $result->fetchArray())
     {
         $iocID = $row['id'];
-        $db->exec("INSERT INTO captures (iocid,fileid) VALUES ($iocID, $fileID)");
+        # $db->exec("INSERT INTO captures (iocid,fileid) VALUES ($iocID, $fileID)"); # vuln to sqli
+        # solution according to chatgpt
+        $stmt = $db->prepare("INSERT INTO captures (iocid, fileid) VALUES (?, ?)");
+        $stmt->execute([$iocID, $fileID]);
+    
     }
 
 } else {
