@@ -57,6 +57,8 @@ def schedule_appointment(request):
         if len(notes) > 50:
             return render_template('appointment_schedule.html', error='The doctor is very busy for long notes!')
         doctor = request.form['doctor']
+        if len(doctor) > 40:
+            return render_template('appointment_schedule.html', error='The doctor is very busy for long notes!')    
         datetime = request.form['appointment']
         conn, cur = connect_database()
         cur = conn.cursor()
