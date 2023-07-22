@@ -42,7 +42,7 @@ while ($val = $result->fetchArray()) {
 }
 
 
-$sql = "SELECT * from policies WHERE owner=:owner";
+$sql = "SELECT * from policies WHERE owner=:owner"; # :owner is placeholder
 
 
 if(isset($filters))
@@ -85,7 +85,7 @@ while($policy = $result->fetchArray())
   {
     die("Too many policies matched the filter.");
   }
-  $content = file_get_contents("../policies/" . $policy['id'] . ".txt");
+  $content = file_get_contents("../policies/" . basename($policy['id']) . ".txt");
   $template = $report['template'];
   $config = HTMLPurifier_Config::createDefault();
   $purifier = new HTMLPurifier($config);
