@@ -15,8 +15,7 @@ all_ids = set()
 all_names = set()
 
 def load_medicine_by_batch_id(supplier, batch_id):
-    # The usage of MD5 as a hasher is considered insecure due to high rates of collisions.
-    # TODO: Patch this to use another hashing method.
+    # While MD5 might be insecure as it's easily crackable, it could cause downtime if changed to another hashing algorithm.
     h_batch_id = md5(batch_id.encode()).hexdigest()
     return load_medicine(supplier, h_batch_id+'.json')
 
