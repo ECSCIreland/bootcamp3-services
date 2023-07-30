@@ -19,7 +19,7 @@ def load_medicine_by_batch_id(supplier, batch_id):
     return load_medicine(supplier, h_batch_id+'.json')
 
 def load_medicine(supplier, medicine):
-    path = f'medicines/{supplier}/{medicine}'
+    path = f'medicines/{secure_filename(supplier)}/{secure_filename(medicine)}'
     if os.path.exists(path):
         with open(path, mode='r') as medicine_file:
             medicine = json.loads(medicine_file.read())
@@ -31,8 +31,8 @@ def load_medicine(supplier, medicine):
     return None, None
 
 for supplier in os.listdir('medicines'):
-    if os.path.isdir(f'medicines/{supplier}'):
-        for medicine in os.listdir(f'medicines/{supplier}'):
+    if os.path.isdir(f'medicines/{secure_filename(supplier)}'):
+        for medicine in os.listdir(f'medicines/{secure_filename(supplier)}'):
             if medicine.endswith('.json'):
                 try:
                     med, img = load_medicine(supplier, medicine)
@@ -75,7 +75,7 @@ def register_medicine(request):
         if '.jpg' not in image.filename:
             return render_template('medicine_register.html', error='Invalid image format!')
         
-        filename = f'medicines/{supplier_name}/{secure_filename(image.filename)}'
+        filename = f'medicines/{secure_filename(supplier_name)}/{secure_filename(image.filename)}'
         image.seek(0)
         image.save(filename)
 
@@ -92,7 +92,7 @@ def register_medicine(request):
         medicine['key'] = session['key']
 
         h_batch_id = md5(batch_id.encode()).hexdigest()
-        with open(f'medicines/{supplier_name}/{h_batch_id}.json', mode='w') as medicine_file:
+        with open(f'medicines/{secure_filename(supplier_name)}/{secure_filename(h_batch_id)}.json', mode='w') as medicine_file:
             medicine_file.write(json.dumps(medicine))
 
         N, e, d = session['key']
@@ -104,7 +104,7 @@ def register_medicine(request):
 
 def get_medicines(supplier):
     try:
-        medicines = os.listdir(f'medicines/{supplier}')
+        medicines = os.listdir(f'medicines/{secure_filename(supplier)}')
     except:
         return []
     result = []
@@ -117,7 +117,7 @@ def get_medicines(supplier):
     return result
 
 def get_medicine(supplier, batch_id):
-    medicines = os.listdir(f'medicines/{supplier}')
+    medicines = os.listdir(f'medicines/{secure_filename(supplier)}')
 
     for medicine in medicines:
         if medicine.endswith('.json'):

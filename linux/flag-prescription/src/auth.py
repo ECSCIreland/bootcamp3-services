@@ -3,6 +3,7 @@
 '''
 
 from flask import render_template, session, redirect, url_for
+from werkzeug.utils import secure_filename
 from Crypto.Util.number import *
 from hashlib import md5
 from functools import wraps
@@ -129,8 +130,8 @@ def auth_register(request):
         session['role'] = role
         session['username'] = name
         if role == 'supplier':
-            assert not os.path.exists(f'medicines/{name}')
-            os.mkdir(f'medicines/{name}')
+            assert not os.path.exists(f'medicines/{secure_filename(name)}')
+            os.mkdir(f'medicines/{secure_filename(name)}')
 
         return redirect(url_for("index"))
     else:
