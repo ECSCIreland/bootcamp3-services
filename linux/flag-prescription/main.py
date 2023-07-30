@@ -8,7 +8,8 @@ from Crypto.Util.number import *
 
 app = Flask(__name__)
 
-app.secret_key = 'some_random_key'  # ChatGPT: Set a secret key for session security
+# disabled so that it gets automatically randomly generated
+# app.secret_key = 'some_random_key'  # ChatGPT: Set a secret key for session security
 
 csrf = CSRFProtect()
 csrf.init_app(app)
