@@ -3,13 +3,13 @@ from flask_wtf.csrf import CSRFProtect
 from src.auth import auth_login, auth_register, auth_logout
 from src.prescription import register_medicine, list_medicines, request_prescription, buy_medicine, medicine_details
 from src.appointments import message_appointment, schedule_appointment, details_appointment, list_doctors
+import secrets
 
 from Crypto.Util.number import *
 
 app = Flask(__name__)
 
-# disabled so that it gets automatically randomly generated
-# app.secret_key = 'some_random_key'  # ChatGPT: Set a secret key for session security
+app.secret_key = secrets.token_hex()
 
 csrf = CSRFProtect()
 csrf.init_app(app)
