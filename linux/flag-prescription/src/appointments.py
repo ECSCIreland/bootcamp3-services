@@ -26,11 +26,11 @@ def message_appointment(request):
         username = session['username']
         if invalid_name(fname + lname) or invalid_specialty(specialty):
             error = 'Invalid characters identified!'
-            cur.execute(f"SELECT fname, lname, message, specialty, is_private FROM doctor_attributes WHERE username=?", (session['username'],))
+            cur.execute("SELECT fname, lname, message, specialty, is_private FROM doctor_attributes WHERE username=?", (session['username'],))
             dt = cur.fetchone()
             return render_template('appointment_message.html', fname=dt[0], lname=dt[1], message=dt[2], specialty=dt[3], is_private=dt[4], error=error)
 
-        cur.execute(f"UPDATE doctor_attributes SET fname='{fname}', lname='{lname}', message='{new_message}', specialty='{specialty}' WHERE username='{username}'")
+        cur.execute("UPDATE doctor_attributes SET fname=?, lname=?, message=?, specialty=? WHERE username=?", (fname, lname, new_message, specialty, username,))
         conn.commit()
         iv = request.form['csrf_token'][-16:].encode()
         
@@ -44,7 +44,7 @@ def message_appointment(request):
         ct = iv.hex() + cipher.encrypt(pad(appointment_data, AES.block_size)).hex()
         return render_template('appointment_message.html', fname=fname, lname=lname, specialty=specialty, message=new_message, is_private=is_private, success='Your information has been updated! Sample token: ' + ct)
     else:
-        cur.execute(f"SELECT fname, lname, message, specialty, is_private FROM doctor_attributes WHERE username=?", (session['username'],))
+        cur.execute("SELECT fname, lname, message, specialty, is_private FROM doctor_attributes WHERE username=?", (session['username'],))
         dt = cur.fetchone()
         return render_template('appointment_message.html', fname=dt[0], lname=dt[1], message=dt[2], specialty=dt[3], is_private=dt[4])
 
@@ -60,7 +60,7 @@ def schedule_appointment(request):
         datetime = request.form['appointment']
         conn, cur = connect_database()
         cur = conn.cursor()
-        cur.execute(f"SELECT * FROM doctor_attributes WHERE username=?", (doctor,))
+        cur.execute("SELECT * FROM doctor_attributes WHERE username=?", (doctor,))
         res = cur.fetchone()
         if res is None:
             error = 'This doctor does not exist in the database!'
@@ -102,7 +102,7 @@ def details_appointment(request):
             doctor = appointment.doctor.decode()
             conn, cur = connect_database()
             cur = conn.cursor()
-            cur.execute(f"SELECT message FROM doctor_attributes WHERE username=?", (doctor,))
+            cur.execute("SELECT message FROM doctor_attributes WHERE username=?", (doctor,))
             message = cur.fetchone()[0]
             datetime = appointment.datetime
         except:
@@ -124,10 +124,10 @@ def list_doctors(request):
         if invalid_name(username):
             return render_template('doctors.html', error='Invalid username!')
         
-        cur.execute(f"SELECT username, fname, lname, specialty, is_private FROM doctor_attributes WHERE username=?", (username,))
+        cur.execute("SELECT username, fname, lname, specialty, is_private FROM doctor_attributes WHERE username=?", (username,))
         doctors = cur.fetchall()
         return render_template('doctors.html', doctors=doctors)
     else:
-        cur.execute(f"SELECT username, fname, lname, specialty, is_private FROM doctor_attributes ORDER BY id DESC LIMIT 10",)
+        cur.execute("SELECT username, fname, lname, specialty, is_private FROM doctor_attributes ORDER BY id DESC LIMIT 10",)
         doctors = cur.fetchall()
         return render_template('doctors.html', doctors=doctors)
