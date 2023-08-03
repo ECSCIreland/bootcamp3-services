@@ -30,7 +30,8 @@ def message_appointment(request):
             dt = cur.fetchone()
             return render_template('appointment_message.html', fname=dt[0], lname=dt[1], message=dt[2], specialty=dt[3], is_private=dt[4], error=error)
 
-        cur.execute(f"UPDATE doctor_attributes SET fname='{fname}', lname='{lname}', message='{new_message}', specialty='{specialty}' WHERE username='{username}'")
+        # Patched SQL Injection by changing query to a parameterized query.
+        cur.execute(f"UPDATE doctor_attributes SET fname=?, lname=?, message=?, specialty=? WHERE username=?", (fname, lname, new_message, specialty, username))
         conn.commit()
         iv = request.form['csrf_token'][-16:].encode()
         
@@ -124,10 +125,12 @@ def list_doctors(request):
         if invalid_name(username):
             return render_template('doctors.html', error='Invalid username!')
         
+        # This is a parameterized SQL query which is not vulnerable to SQL injection.
         cur.execute(f"SELECT username, fname, lname, specialty, is_private FROM doctor_attributes WHERE username=?", (username,))
         doctors = cur.fetchall()
         return render_template('doctors.html', doctors=doctors)
     else:
+        # This is a static SQL query which can not be used for SQL injection.
         cur.execute(f"SELECT username, fname, lname, specialty, is_private FROM doctor_attributes ORDER BY id DESC LIMIT 10",)
         doctors = cur.fetchall()
         return render_template('doctors.html', doctors=doctors)
