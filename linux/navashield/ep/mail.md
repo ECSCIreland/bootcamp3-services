@@ -168,7 +168,19 @@ As this is an attack-defence challenge, it would make sense to patch this to pre
 
 In this situation, we can use ``memcmp`` to replace the ``strncmp`` which will fix the comparision vulnerability.
 
-It is still a WIP to patch this successfully, and once it has been patched i'll fill the rest of this part out!
+This can be completed in a number of ways, through either detouring the original function, hooking ``strncmp`` and checking, etc..
+
+As a quick and dirty way to patch this, trying to emulate how it would be done during an attack-defence challenge, we can create a simple hook into ``strncmp`` and just redirect all calls for it towards ``memcmp``. This could potentially cause downtime to the service but as the application is simple enough, this should not be any issue as valid signatures are passed on correctly.
+
+Source code for this patch (written in C) can be found in the file ``patch.c`` in this directory. To compile using GCC, run
+
+```gcc -shared -fPIC -ldl patch.c -o patch.so```
+
+This file is then added to the Dockerfile to be included in the build and an extra command argument is added to pass the library in through ``LD_PRELOAD``.
+
+Once loaded, this fixes the vulnerability.
+
+**Note**: This is a _very_ rough patch and could easily cause issues, but the program does not mess with ``strncmp`` enough to cause issues, and neither does any libraries linked. There are many other ways to go about patching this.
 
 ## Extra Information
 
